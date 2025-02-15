@@ -1,7 +1,11 @@
+import Form from "@/components/Form/Form";
+
 const Page = () => {
     return (
         <div>
-            login page р
+            login page
+            <br/>
+            <Form/>
         </div>
     );
 };

@@ -1,54 +1,60 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
-import './StyleForForm.css';
-import Form from "next/form";
+import { useForm } from "react-hook-form";
+import { LoginUser } from "@/server-actions/ServerActions";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-interface FormComponentProps {
+interface FormPropsType {
     username: string;
     password: string;
 }
 
-const LoginForm = () => {
-    const { handleSubmit, register } = useForm<FormComponentProps>();
-    const [error, setError] = useState<string | null>(null);
+const FormComponent = () => {
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const router = useRouter();
 
-    const customHandler = async (formData: FormComponentProps) => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isValid },
+        reset,
+    } = useForm<FormPropsType>({
+        mode: "onChange",
+    });
+
+    const onSubmit = async (data: FormPropsType) => {
+        setErrorMessage(null);
+
         try {
-            await loginUser(formData);
-            router.push('/dashboard');
-        } catch (err) {
-            setError((err as Error).message);
+            const formData = new FormData();
+            formData.append("username", data.username);
+            formData.append("password", data.password);
+
+            const user = await LoginUser(formData);
+            console.log("Успішний вхід:", user);
+
+            reset();
+            router.push("/users");
+        } catch {
+            setErrorMessage("Неправильний логін або пароль");
         }
     };
 
     return (
-        <div className={'MainFormDiv'}>
-            <p className={'HeaderForForm'}>Please log in to access the site.</p>
-            <hr className={'hrForForm'} />
-            <Form className={'Form'} action={customHandler}>
-                <h4 className={'Enter'}>Enter your username</h4>
-                <input
-                    type="text"
-                    {...register('username')}
-                    placeholder="Username"
-                    className="FormInputUsername"
-                />
-                <h4 className={'Enter'}>Enter your password</h4>
-                <input
-                    type="password"
-                    {...register('password')}
-                    placeholder="Password"
-                    className="FormInputPassword"
-                />
-                <button className={'ButtonForForm'} type="submit">Submit</button>
-            </Form>
-            {error && <p className={'error'}>{error}</p>}
+        <div>
+            <h1>Аутентифікація</h1>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <input type="text" {...register("username")} placeholder="Username" />
+
+                <input type="password" {...register("password")} placeholder="Password" />
+
+                <button type="submit" disabled={!isValid}>Submit</button>
+
+                {errorMessage && <h4>{errorMessage}</h4>}
+            </form>
         </div>
     );
 };
 
-export default LoginForm;
+export default FormComponent;

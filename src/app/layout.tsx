@@ -1,23 +1,17 @@
-import type { Metadata } from "next";
-import "./globals.css";
+// src/app/layout.tsx
+'use client'
 
-export const metadata: Metadata = {
-  title: "Users + Recipes",
-  description: "Choose the user or recipe for learn more",
-};
+import './globals.css';
+import Menu from "@/components/Menu/Menu";
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <html lang="en">
-      <body>
-        layout
-        <hr/>
-        {children}
-      </body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html lang="en">
+        <body>
+            <Menu />
+            <hr />
+            {children}
+        </body>
+        </html>
+    );
 }

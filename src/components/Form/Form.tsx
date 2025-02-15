@@ -17,7 +17,7 @@ const FormComponent = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors, isValid },
+        formState: {isValid},
         reset,
     } = useForm<FormPropsType>({
         mode: "onChange",
@@ -32,7 +32,7 @@ const FormComponent = () => {
             formData.append("password", data.password);
 
             const user = await LoginUser(formData);
-            console.log("Успішний вхід:", user);
+            console.log(user);
 
             reset();
             router.push("/users");

@@ -1,7 +1,9 @@
+import Users from "@/components/Users/Users";
+
 const Page = () => {
     return (
         <div>
-            users page
+            <Users/>
         </div>
     );
 };

@@ -8,7 +8,7 @@ export const LoginUser = async (formData: FormData) => {
 
     try {
         const user = await apiService.LoginUser(username, password);
-        console.log(user); // Вивід у консоль токенів юзера
+        console.log(user);
         return user;
     } catch {
         throw new Error("Неправильний логін або пароль");

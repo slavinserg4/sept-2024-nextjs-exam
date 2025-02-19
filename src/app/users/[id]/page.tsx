@@ -1,16 +1,15 @@
 import {FC} from "react";
-import {apiService} from "@/services/api.services";
+import UserDetails from "@/components/UserDetails/UserDetails";
+
 type userProps = {
-    params:{id:string};
+    params:Promise<{id:string}>;
 }
 
 const Page:FC<userProps> = async ({params}) => {
     const {id} = await params;
-    const user = await apiService.getUser(+id)
-    console.log(user)
     return (
         <div>
-            {user.id}, {user.firstName}
+            <UserDetails id={+id}/>
         </div>
     );
 };

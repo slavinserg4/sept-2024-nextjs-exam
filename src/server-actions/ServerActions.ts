@@ -14,3 +14,19 @@ export const LoginUser = async (formData: FormData) => {
         throw new Error("Неправильний логін або пароль");
     }
 };
+
+export const searchQueryAction = async (
+    pathname: string,
+    searchParams: URLSearchParams,
+    queryValue: string
+) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    if (queryValue) {
+        params.set("query", queryValue);
+    } else {
+        params.delete("query");
+    }
+
+    return `${pathname}?${params.toString()}`;
+};

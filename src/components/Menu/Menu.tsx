@@ -1,13 +1,13 @@
 // components/Menu/Menu.tsx
 import Link from "next/link";
+import {cookies} from "next/headers";
 
-interface MenuProps {
-    isAuthenticated: boolean;
-    userName?: string;
-    userImage?: string;
-}
 
-const Menu = ({ isAuthenticated, userName, userImage }: MenuProps) => {
+const Menu = async () => {
+    const cookieStore = await cookies();
+    const isAuthenticated = cookieStore.get('isAuthenticated')?.value === 'true';
+    const userImage = cookieStore.get('userImage')?.value || '';
+    const userName = cookieStore.get('userName')?.value || '';
     return (
         <div>
             <nav>

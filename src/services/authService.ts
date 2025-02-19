@@ -1,40 +1,40 @@
-import { cookieService } from './cookieService';
-import { ITokenPair } from "@/models/ITokenPair";
-import {IUserWithTokens} from "@/models/IUserWithTokens";
+// src/services/authService.ts
+import { ITokenPair } from '@/models/ITokenPair';
+import { IUserWithTokens } from '@/models/IUserWithTokens';
+import {cookies} from "next/headers";
 
 const BASE_URL = 'https://dummyjson.com/auth';
 
 export const authService = {
     loginUser: async (username: string, password: string) => {
-        const response = await fetch(`${BASE_URL}/login`, {
+        const response = await fetch(`https://dummyjson.com/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password, expiresInMins: 1 }),
+            body: JSON.stringify({ username, password, expiresInMins: 30 }),
         });
 
         if (!response.ok) {
             throw new Error('Помилка входу: неправильний логін або пароль');
         }
 
-        const data:IUserWithTokens = await response.json();
+        const data: IUserWithTokens = await response.json();
         console.log('Дані входу:', data);
 
+        const cookieStore = await cookies();
         // Зберігаємо токени та інші дані в куках
-        await cookieService.set('accessToken', data.accessToken);
-        await cookieService.set('refreshToken', data.refreshToken);
-        await cookieService.set('isAuthenticated', 'true');
-        await cookieService.set('userName', data.username, { httpOnly: false });
-        await cookieService.set('userImage', data.image, { httpOnly: false });
+        cookieStore.set('accessToken', data.accessToken);
+        cookieStore.set('refreshToken', data.refreshToken);
+        cookieStore.set('isAuthenticated', 'true');
+        cookieStore.set('userName', data.username );
+        cookieStore.set('userImage', data.image);
 
-        return data;
+
     },
 
-    /**
-     * Оновлення (refresh) токену.
-     */
-    refreshToken: async () => {
-        const refreshTokenValue = await cookieService.get('refreshToken');
-        console.log('Refresh token (з cookie):', refreshTokenValue);
+    // Refresh токенів
+    refreshToken: async (): Promise<ITokenPair> => {
+        const cookieStore = await cookies();
+        const refreshTokenValue = cookieStore.get('refreshToken')?.value;
         if (!refreshTokenValue) {
             throw new Error('Немає refresh token для оновлення');
         }
@@ -43,25 +43,23 @@ export const authService = {
             refreshToken: refreshTokenValue,
             expiresInMins: 30,
         });
-        console.log('Request body для refresh:', requestBody);
 
         const response = await fetch(`${BASE_URL}/refresh`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: requestBody,
-
         });
 
         if (!response.ok) {
             const errorText = await response.text();
-            console.error('Помилка оновлення токена:', response.status, errorText);
-            throw new Error('Не вдалося оновити токен');
+            throw new Error(`Не вдалося оновити токен: ${errorText}`);
         }
 
         const data: ITokenPair = await response.json();
-        console.log('Оновлені токени:', data);
 
-        await cookieService.set('accessToken', data.accessToken);
-        await cookieService.set('refreshToken', data.refreshToken);
+        // Оновлюємо куки з новими токенами
+        console.log('New tokens:', data);
+
+        return data;
     },
 };

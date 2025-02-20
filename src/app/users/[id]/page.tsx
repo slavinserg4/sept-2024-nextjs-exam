@@ -9,7 +9,7 @@ const Page:FC<userProps> = async ({params}) => {
     const {id} = await params;
     return (
         <div>
-            <UserDetails id={+id}/>
+            <UserDetails id={Number(id)}/>
         </div>
     );
 };

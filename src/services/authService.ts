@@ -1,16 +1,17 @@
 // src/services/authService.ts
 import { ITokenPair } from '@/models/ITokenPair';
 import { IUserWithTokens } from '@/models/IUserWithTokens';
+import {setCookie} from "cookies-next/server";
 import {cookies} from "next/headers";
 
-const BASE_URL = 'https://dummyjson.com/auth';
+
 
 export const authService = {
     loginUser: async (username: string, password: string) => {
         const response = await fetch(`https://dummyjson.com/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password, expiresInMins: 30 }),
+            body: JSON.stringify({ username, password, expiresInMins: 1 }),
         });
 
         if (!response.ok) {
@@ -20,34 +21,24 @@ export const authService = {
         const data: IUserWithTokens = await response.json();
         console.log('Дані входу:', data);
 
-        const cookieStore = await cookies();
         // Зберігаємо токени та інші дані в куках
-        cookieStore.set('accessToken', data.accessToken);
-        cookieStore.set('refreshToken', data.refreshToken);
-        cookieStore.set('isAuthenticated', 'true');
-        cookieStore.set('userName', data.username );
-        cookieStore.set('userImage', data.image);
-
+        await setCookie('accessToken', data.accessToken,{cookies});
+        await setCookie('refreshToken', data.refreshToken,{cookies});
+        await setCookie('isAuthenticated', 'true',{cookies});
+        await setCookie('userName', data.username ,{cookies});
+        await setCookie('userImage', data.image,{cookies});
 
     },
 
     // Refresh токенів
-    refreshToken: async (): Promise<ITokenPair> => {
-        const cookieStore = await cookies();
-        const refreshTokenValue = cookieStore.get('refreshToken')?.value;
-        if (!refreshTokenValue) {
-            throw new Error('Немає refresh token для оновлення');
-        }
-
-        const requestBody = JSON.stringify({
-            refreshToken: refreshTokenValue,
-            expiresInMins: 30,
-        });
-
-        const response = await fetch(`${BASE_URL}/refresh`, {
+    refreshToken: async (refreshTokenValue:string) => {
+        const response = await fetch('https://dummyjson.com/auth/refresh', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: requestBody,
+            body: JSON.stringify({
+                refreshToken: refreshTokenValue,
+                expiresInMins: 30,
+            })
         });
 
         if (!response.ok) {
@@ -56,10 +47,7 @@ export const authService = {
         }
 
         const data: ITokenPair = await response.json();
+        return data
 
-        // Оновлюємо куки з новими токенами
-        console.log('New tokens:', data);
-
-        return data;
     },
 };

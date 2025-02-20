@@ -1,22 +1,23 @@
 // src/services/api.service.ts
-import { cookies } from 'next/headers';
-import {IRecipe} from "@/models/IRecipe";
-import {IUser} from "@/models/IUser";
-import {IRecipeBaseResponseModel} from "@/models/IRecipeBaseResponseModel";
-import {IUserBaseResponseModel} from "@/models/IUserBaseResponseModel";
+import { IRecipe } from "@/models/IRecipe";
+import { IUser } from "@/models/IUser";
+import { IRecipeBaseResponseModel } from "@/models/IRecipeBaseResponseModel";
+import { IUserBaseResponseModel } from "@/models/IUserBaseResponseModel";
+import {getCookie} from "cookies-next/server";
+import {cookies} from "next/headers";
 
 const BASE_URL = 'https://dummyjson.com/auth';
 
 async function getAccessToken(): Promise<string> {
-    const coockieStore = await cookies();
-    const token = coockieStore.get('accessToken')?.value;
+    const token = await getCookie('accessToken',{cookies});
     if (!token) {
         throw new Error('Немає access token');
     }
-    return token;
+    return token.toString();
 }
 
 async function fetchAPI<T>(url: string): Promise<T> {
+    // Отримуємо поточний токен із cookies
     const token = await getAccessToken();
     const headers = new Headers({
         'Authorization': `Bearer ${token}`,
@@ -26,21 +27,6 @@ async function fetchAPI<T>(url: string): Promise<T> {
     const response = await fetch(url, { headers });
     console.log('Response status:', response.status);
 
-    if (response.status === 401) {
-        // Викликаємо endpoint для оновлення токенів
-        const refreshResponse = await fetch('http://localhost/api/refresh-token', {
-            credentials: 'include',
-        });
-        console.log('refresh response:', refreshResponse);
-
-        // Тепер у нас має бути оновлений cookie з новим accessToken
-        const newToken = await getAccessToken(); // Функція, яка зчитує accessToken з cookies
-        headers.set('Authorization', `Bearer ${newToken}`);
-
-        // Повторюємо початковий запит
-        const response = await fetch(url, { headers });
-        console.log('Response status after 401: ', response.status);
-    }
 
     if (!response.ok) {
         const errorText = await response.text();

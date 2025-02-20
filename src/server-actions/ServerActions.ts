@@ -30,3 +30,18 @@ export const searchQueryAction = async (
 
     return `${pathname}?${params.toString()}`;
 };
+
+import { getCookie, setCookie } from "cookies-next/server";
+import { cookies } from "next/headers";
+
+export const SetAndRefreshTokens = async (): Promise<{ accessToken: string, refreshToken: string }> => {
+    const refreshToken = getCookie('refreshToken', { cookies }) || '';
+    const tokensData = await authService.refreshToken(refreshToken.toString());
+
+    await setCookie('accessToken', tokensData.accessToken, { cookies, path: '/' });
+    await setCookie('refreshToken', tokensData.refreshToken, { cookies, path: '/' });
+
+    return tokensData;
+}
+
+

@@ -1,40 +1,64 @@
-import { FC } from "react";
+"use client";
+
+import React, { FC, useEffect, useState } from "react";
 import { mergeRecipesWithUsers } from "@/services/helper";
-import { apiService } from "@/services/api.services";
-import {IRecipe} from "@/models/IRecipe";
+import { IRecipe } from "@/models/IRecipe";
 import Link from "next/link";
+import { IRecipeBaseResponseModel } from "@/models/IRecipeBaseResponseModel";
 
 interface Props {
     userId: number;
 }
 
-const UserRecipes: FC<Props> = async ({ userId }) => {
-    let allRecipes:IRecipe[] = [];
-    let skip = 0;
-    const limit = 50; // Поставимо базовий ліміт
-    let total = 0;
+const UserRecipes: FC<Props> = ({ userId }) => {
+    const [userRecipes, setUserRecipes] = useState<IRecipe[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
-    do {
-        const response = await apiService.getRecipes( skip, limit );
-        allRecipes = [...allRecipes, ...response.recipes];
-        total = response.total;
-        skip += limit;
-    } while (allRecipes.length < total);
+    useEffect(() => {
+        const fetchUserRecipes = async () => {
+            try {
+                let allRecipes: IRecipe[] = [];
+                let skip = 0;
+                const limit = 50; // базовий ліміт
+                let total = 0;
 
-    const userRecipes = mergeRecipesWithUsers(allRecipes, userId);
+                do {
+                    const response: IRecipeBaseResponseModel = await fetch(
+                        `http://localhost:3000/recipes/api?skip=${skip}&limit=${limit}`
+                    ).then((res) => res.json());
+                    allRecipes = [...allRecipes, ...response.recipes];
+                    total = response.total;
+                    skip += limit;
+                } while (allRecipes.length < total);
+
+                const filteredRecipes = mergeRecipesWithUsers(allRecipes, userId);
+                setUserRecipes(filteredRecipes);
+            } catch (err) {
+                console.error("Error fetching user recipes", err);
+                setError("Помилка при завантаженні рецептів");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUserRecipes().catch();
+    }, [userId]);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+    if (userRecipes.length === 0) return <h3>This user has no recipes.</h3>;
 
     return (
         <div>
             <h2>Recipes of this user</h2>
-            {userRecipes.length > 0 ? (
-                <ul>
-                    {userRecipes.map(recipe => (
-                        <Link href={`/recipes/${recipe.id}`} key={recipe.id}>{recipe.name}</Link>
-                    ))}
-                </ul>
-            ) : (
-                <h3>This user has no recipes.</h3>
-            )}
+            <ul>
+                {userRecipes.map((recipe) => (
+                    <li key={recipe.id}>
+                        <Link href={`/recipes/${recipe.id}`}>{recipe.name}</Link>
+                    </li>
+                ))}
+            </ul>
         </div>
     );
 };

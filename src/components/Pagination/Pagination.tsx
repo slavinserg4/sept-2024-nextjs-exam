@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
@@ -13,10 +15,15 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages }) => {
 
     const getPageLink = (page: number) => {
         const params = new URLSearchParams();
-        // Якщо параметр query існує – додаємо його
+        // Додаємо параметр query, якщо він існує
         const query = searchParams.get("query");
         if (query) {
             params.set("query", query);
+        }
+        // Додаємо параметр tag, якщо він існує
+        const tag = searchParams.get("tag");
+        if (tag) {
+            params.set("tag", tag);
         }
         params.set("page", page.toString());
         return `${pathname}?${params.toString()}`;

@@ -15,11 +15,8 @@ const Users = () => {
     const query = searchParams.get("query") || "";
     const currentPage = parseInt(page, 10);
     const limit = 10;
-    console.log(currentPage)
 
     const [data, setData] = useState<IUserBaseResponseModel | null>(null);
-    const [error, setError] = useState<string | null>(null);
-
     useEffect(() => {
         const fetchUsers = async () => {
             try {
@@ -27,7 +24,6 @@ const Users = () => {
                 const queryString =
                     `?page=${currentPage}&limit=${limit}` +
                     (query ? `&query=${encodeURIComponent(query)}` : "");
-                console.log("Fetching:", `http://localhost:3000/users/api${queryString}`);
                 const res = await fetch(`http://localhost:3000/users/api${queryString}`, {
                     method: "GET"
                 });
@@ -37,14 +33,13 @@ const Users = () => {
                 const json: IUserBaseResponseModel = await res.json();
                 setData(json);
             } catch  {
-                setError( "Виникла помилка");
+                console.log('error fetching users');
             }
         };
 
         fetchUsers().catch();
-    }, [currentPage, query]);
+    }, [query, currentPage]);
 
-    if (error) return <div>Error: {error}</div>;
     if (!data) return <div>Loading...</div>;
 
     const totalPages = data.total ? Math.ceil(data.total / limit) : 1;

@@ -10,7 +10,7 @@ export const authService = {
         const response = await fetch(`https://dummyjson.com/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password, expiresInMins: 30 }),
+            body: JSON.stringify({ username, password, expiresInMins: 1 }),
         });
 
         if (!response.ok) {
@@ -20,7 +20,6 @@ export const authService = {
         const data: IUserWithTokens = await response.json();
         console.log('Дані входу:', data);
 
-        // Зберігаємо токени та інші дані в куках
         await setCookie('accessToken', data.accessToken,{cookies});
         await setCookie('refreshToken', data.refreshToken,{cookies});
         await setCookie('isAuthenticated', 'true',{cookies});

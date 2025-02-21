@@ -1,5 +1,3 @@
-"use client";
-
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import React from "react";
@@ -13,9 +11,13 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages }) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
-    const params = new URLSearchParams(searchParams.toString());
-
     const getPageLink = (page: number) => {
+        const params = new URLSearchParams();
+        // Якщо параметр query існує – додаємо його
+        const query = searchParams.get("query");
+        if (query) {
+            params.set("query", query);
+        }
         params.set("page", page.toString());
         return `${pathname}?${params.toString()}`;
     };
@@ -23,7 +25,9 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages }) => {
     return (
         <nav style={{ display: "flex", gap: "8px", marginTop: "16px", alignItems: "center" }}>
             {currentPage > 1 && <Link href={getPageLink(currentPage - 1)}>Prev</Link>}
-            <span>Page {currentPage} of {totalPages}</span>
+            <span>
+        Page {currentPage} of {totalPages}
+      </span>
             {currentPage < totalPages && <Link href={getPageLink(currentPage + 1)}>Next</Link>}
         </nav>
     );

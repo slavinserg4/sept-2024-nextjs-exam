@@ -3,22 +3,12 @@ import { IRecipe } from "@/models/IRecipe";
 import { IUser } from "@/models/IUser";
 import { IRecipeBaseResponseModel } from "@/models/IRecipeBaseResponseModel";
 import { IUserBaseResponseModel } from "@/models/IUserBaseResponseModel";
-import {getCookie} from "cookies-next/server";
-import {cookies} from "next/headers";
+
 
 const BASE_URL = 'https://dummyjson.com/auth';
 
-async function getAccessToken(): Promise<string> {
-    const token = await getCookie('accessToken',{cookies});
-    if (!token) {
-        throw new Error('Немає access token');
-    }
-    return token.toString();
-}
 
-async function fetchAPI<T>(url: string): Promise<T> {
-    // Отримуємо поточний токен із cookies
-    const token = await getAccessToken();
+async function fetchAPI<T>(url: string, token:string): Promise<T> {
     const headers = new Headers({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -33,11 +23,12 @@ async function fetchAPI<T>(url: string): Promise<T> {
         console.error(`Помилка при запиті ${url}: ${response.status} - ${errorText}`);
         throw new Error(`Запит завершився помилкою: ${response.statusText}`);
     }
+    console.log('Response:', response);
     return response.json();
 }
 
 export const apiService = {
-    getUsers: async (skip = 0, limit = 10, query?: string | number): Promise<IUserBaseResponseModel> => {
+    getUsers: async (token:string, skip = 0, limit = 10, query?: string | number): Promise<IUserBaseResponseModel> => {
         let url = `${BASE_URL}/users?skip=${skip}&limit=${limit}`;
         if (query) {
             url =
@@ -45,29 +36,31 @@ export const apiService = {
                     ? `${BASE_URL}/users/${query}`
                     : `${BASE_URL}/users/search?q=${query}&skip=${skip}&limit=${limit}`;
         }
-        return fetchAPI(url);
+        return fetchAPI(url,token);
     },
 
-    getUser: async (id: number): Promise<IUser> => {
+    getUser: async ( token:string, id: number): Promise<IUser> => {
         const url = `${BASE_URL}/users/${id}`;
-        return fetchAPI(url);
+        return fetchAPI(url,token);
     },
 
-    getRecipes: async (skip = 0, limit = 10, query?: string | number): Promise<IRecipeBaseResponseModel> => {
+    getRecipes: async ( token:string,skip = 0, limit = 10, query?: string | number): Promise<IRecipeBaseResponseModel> => {
         let url = `${BASE_URL}/recipes?skip=${skip}&limit=${limit}`;
         if (query) {
             url = typeof query === "number"
                 ? `${BASE_URL}/recipes/${query}`
                 : `${BASE_URL}/recipes/search?q=${query}&skip=${skip}&limit=${limit}`;
         }
-        return fetchAPI(url);
+        return fetchAPI(url,token);
     },
 
-    getRecipe: async (id: number): Promise<IRecipe> => {
-        return fetchAPI(`${BASE_URL}/recipes/${id}`);
+    getRecipe: async ( token:string,id: number): Promise<IRecipe> => {
+        const url = `${BASE_URL}/recipes/${id}`;
+        return fetchAPI(url,token);
     },
 
-    getRecipesByTag: async (tag: string, skip = 0, limit = 10): Promise<IRecipeBaseResponseModel> => {
-        return fetchAPI(`${BASE_URL}/recipes/tag/${tag}?skip=${skip}&limit=${limit}`);
+    getRecipesByTag: async ( token:string,tag: string, skip = 0, limit = 10): Promise<IRecipeBaseResponseModel> => {
+        const url = `${BASE_URL}/recipes/tag/${tag}?skip=${skip}&limit=${limit}`
+        return fetchAPI(url,token);
     },
 };

@@ -31,8 +31,7 @@ const FormComponent = () => {
             formData.append("username", data.username);
             formData.append("password", data.password);
 
-            const user = await LoginUser(formData);
-            console.log(user);
+            await LoginUser(formData);
 
             reset();
             router.push("/users");

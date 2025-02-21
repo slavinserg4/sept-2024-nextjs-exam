@@ -1,4 +1,3 @@
-// src/services/authService.ts
 import { ITokenPair } from '@/models/ITokenPair';
 import { IUserWithTokens } from '@/models/IUserWithTokens';
 import {setCookie} from "cookies-next/server";
@@ -11,7 +10,7 @@ export const authService = {
         const response = await fetch(`https://dummyjson.com/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password, expiresInMins: 1 }),
+            body: JSON.stringify({ username, password, expiresInMins: 30 }),
         });
 
         if (!response.ok) {

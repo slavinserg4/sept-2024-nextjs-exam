@@ -1,16 +1,8 @@
+// app/users/page.tsx
+
 import Users from "@/components/Users/Users";
 
-interface PageProps {
-
-    searchParams: Promise<{ page?: string }>;
+export default async function UsersPage() {
+    // Очікуємо розв'язання обіцянки, якщо це необхідно
+    return <Users/>;
 }
-
-const UsersPage = ({ searchParams }: PageProps) => {
-    return (
-        <div>
-            <Users searchParams={searchParams} />
-        </div>
-    );
-};
-
-export default UsersPage;

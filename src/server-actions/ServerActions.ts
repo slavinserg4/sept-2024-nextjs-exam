@@ -17,31 +17,18 @@ export const LoginUser = async (formData: FormData) => {
 
 export const searchQueryAction = async (
     pathname: string,
-    searchParams: URLSearchParams,
+    _searchParams: URLSearchParams,
     queryValue: string
 ) => {
-    const params = new URLSearchParams(searchParams.toString());
-
+    // Створюємо новий об'єкт URLSearchParams і додаємо лише потрібні параметри
+    const params = new URLSearchParams();
     if (queryValue) {
         params.set("query", queryValue);
-    } else {
-        params.delete("query");
     }
+    // При пошуку зазвичай починаємо з першої сторінки
+    params.set("page", "1");
 
     return `${pathname}?${params.toString()}`;
 };
-
-import { getCookie, setCookie } from "cookies-next/server";
-import { cookies } from "next/headers";
-
-export const SetAndRefreshTokens = async (): Promise<{ accessToken: string, refreshToken: string }> => {
-    const refreshToken = getCookie('refreshToken', { cookies }) || '';
-    const tokensData = await authService.refreshToken(refreshToken.toString());
-
-    await setCookie('accessToken', tokensData.accessToken, { cookies, path: '/' });
-    await setCookie('refreshToken', tokensData.refreshToken, { cookies, path: '/' });
-
-    return tokensData;
-}
 
 

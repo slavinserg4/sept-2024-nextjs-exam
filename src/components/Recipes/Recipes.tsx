@@ -8,7 +8,6 @@ import Search from "@/components/Search/Search";
 import {IRecipeBaseResponseModel} from "@/models/IRecipeBaseResponseModel";
 
 const Recipes = () => {
-    // Отримуємо параметри з URL
     const searchParams = useSearchParams();
     const page = searchParams.get("page") || "1";
     const query = searchParams.get("query") || "";

@@ -9,7 +9,6 @@ import { IUser } from "@/models/IUser";
 import { IUserBaseResponseModel } from "@/models/IUserBaseResponseModel";
 
 const Users = () => {
-    // Отримуємо параметри з URL
     const searchParams = useSearchParams();
     const page = searchParams.get("page") || "1";
     const query = searchParams.get("query") || "";
@@ -20,7 +19,6 @@ const Users = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                // Формуємо рядок запиту
                 const queryString =
                     `?page=${currentPage}&limit=${limit}` +
                     (query ? `&query=${encodeURIComponent(query)}` : "");

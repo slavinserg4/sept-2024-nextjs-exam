@@ -16,7 +16,7 @@ const Search = () => {
         const newUrl = await searchQueryAction(pathname, searchParams, queryValue);
 
         startTransition(() => {
-            router.push(newUrl); // Оновлюємо URL після виконання Server Action
+            router.push(newUrl);
         });
     };
 

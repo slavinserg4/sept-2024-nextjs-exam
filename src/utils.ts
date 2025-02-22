@@ -1,4 +1,3 @@
-// /lib/withTokenRefresh.ts
 import { cookies } from 'next/headers';
 import { ITokenPair } from '@/models/ITokenPair';
 import { authService } from '@/services/authService';
@@ -14,7 +13,6 @@ export async function withTokenRefresh<T>(fetchData: () => Promise<T>): Promise<
             errorMessage = error.message;
         }
 
-        // Якщо помилка свідчить про Unauthorized – пробуємо оновити токени
         if (errorMessage.includes('401') || errorMessage.includes('Unauthorized')) {
             try {
                 const cookieStore = await cookies();
@@ -22,11 +20,9 @@ export async function withTokenRefresh<T>(fetchData: () => Promise<T>): Promise<
                 if (!refreshToken) {
                     return Response.json({ message: 'Немає refresh token' }, { status: 401 });
                 }
-                // Оновлюємо токени через authService
                 const tokensData: ITokenPair = await authService.refreshToken(refreshToken);
                 cookieStore.set('accessToken', tokensData.accessToken);
                 cookieStore.set('refreshToken', tokensData.refreshToken);
-                // Після оновлення, повторно отримуємо дані
                 const data = await fetchData();
                 return Response.json(data);
             } catch (refreshError: unknown) {

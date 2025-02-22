@@ -4,7 +4,6 @@ import React, { useState, useEffect, FC } from "react";
 import Link from "next/link";
 import RecipeTags from "@/components/RecipeTags/RecipeTags";
 import {IRecipe} from "@/models/IRecipe";
-// Припустимо, що у вас є тип IRecipe, можна його імпортувати, або використовувати any
 
 type RecipeDetailType = {
     id: number;
@@ -25,7 +24,6 @@ const RecipeDetails: FC<RecipeDetailType> = ({ id }) => {
                      new Error("Не вдалося завантажити дані рецепту");
                 }
                 const data = await res.json();
-                // Очікуємо, що API повертає об'єкт з ключем "recipe"
                 if (data.recipe) {
                     setRecipe(data.recipe);
                 } else {

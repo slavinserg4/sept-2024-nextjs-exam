@@ -18,8 +18,6 @@ export async function GET(
         if (!accessToken) {
             return Response.json({ message: 'Нема access токена' }, { status: 401 });
         }
-        // Отримуємо дані рецепту за допомогою apiService.
-        // За умовчанням, припускаємо, що apiService.getRecipe приймає accessToken та id
         const recipe = await apiService.getRecipe(accessToken, numericId);
         return { recipe };
     }

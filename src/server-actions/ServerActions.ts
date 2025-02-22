@@ -20,12 +20,10 @@ export const searchQueryAction = async (
     _searchParams: URLSearchParams,
     queryValue: string
 ) => {
-    // Створюємо новий об'єкт URLSearchParams і додаємо лише потрібні параметри
     const params = new URLSearchParams();
     if (queryValue) {
         params.set("query", queryValue);
     }
-    // При пошуку зазвичай починаємо з першої сторінки
     params.set("page", "1");
 
     return `${pathname}?${params.toString()}`;

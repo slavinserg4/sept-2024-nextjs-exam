@@ -15,12 +15,10 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages }) => {
 
     const getPageLink = (page: number) => {
         const params = new URLSearchParams();
-        // Додаємо параметр query, якщо він існує
         const query = searchParams.get("query");
         if (query) {
             params.set("query", query);
         }
-        // Додаємо параметр tag, якщо він існує
         const tag = searchParams.get("tag");
         if (tag) {
             params.set("tag", tag);

@@ -5,7 +5,6 @@ import RecipeTags from "@/components/RecipeTags/RecipeTags";
 
 interface IRecipeProps {
     recipe: IRecipe;
-    // Можна додати інші властивості, якщо потрібно
 }
 
 

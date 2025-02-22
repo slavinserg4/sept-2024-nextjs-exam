@@ -1,4 +1,3 @@
-// app/layout.tsx
 import Menu from "@/components/Menu/Menu";
 import {Metadata} from "next";
 

@@ -1,12 +1,9 @@
-// src/services/api.service.ts
 import { IRecipe } from "@/models/IRecipe";
 import { IUser } from "@/models/IUser";
 import { IRecipeBaseResponseModel } from "@/models/IRecipeBaseResponseModel";
 import { IUserBaseResponseModel } from "@/models/IUserBaseResponseModel";
 
-
 const BASE_URL = 'https://dummyjson.com/auth';
-
 
 async function fetchAPI<T>(url: string, token:string): Promise<T> {
     const headers = new Headers({
@@ -15,7 +12,6 @@ async function fetchAPI<T>(url: string, token:string): Promise<T> {
     });
 
     const response = await fetch(url, { headers });
-    console.log('Response status:', response.status);
 
 
     if (!response.ok) {
@@ -23,7 +19,6 @@ async function fetchAPI<T>(url: string, token:string): Promise<T> {
         console.error(`Помилка при запиті ${url}: ${response.status} - ${errorText}`);
         throw new Error(`Запит завершився помилкою: ${response.statusText}`);
     }
-    console.log('Response:', response);
     return response.json();
 }
 

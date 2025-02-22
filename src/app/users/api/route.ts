@@ -1,4 +1,3 @@
-// app/users/route.ts
 import { cookies } from 'next/headers';
 import { apiService } from '@/services/api.services';
 import {withTokenRefresh} from "@/utils";
@@ -13,7 +12,6 @@ export async function GET(request: Request) {
     const currentPage = pageParam ? Number(pageParam) : 1;
     const skip = (currentPage - 1) * limit;
 
-    // Функція для отримання даних через apiService
     async function fetchData() {
         const cookieStore = await cookies();
         const accessToken = cookieStore.get('accessToken')?.value;

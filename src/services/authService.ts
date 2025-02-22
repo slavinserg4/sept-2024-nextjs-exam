@@ -4,13 +4,12 @@ import {setCookie} from "cookies-next/server";
 import {cookies} from "next/headers";
 
 
-
 export const authService = {
     loginUser: async (username: string, password: string) => {
         const response = await fetch(`https://dummyjson.com/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password, expiresInMins: 1 }),
+            body: JSON.stringify({ username, password, expiresInMins: 30 }),
         });
 
         if (!response.ok) {
@@ -18,7 +17,6 @@ export const authService = {
         }
 
         const data: IUserWithTokens = await response.json();
-        console.log('Дані входу:', data);
 
         await setCookie('accessToken', data.accessToken,{cookies});
         await setCookie('refreshToken', data.refreshToken,{cookies});

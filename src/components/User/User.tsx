@@ -10,7 +10,6 @@ const User:FC<userPropsType> = ({user}) => {
     return (
         <div>
             <Link href={`/users/${user.id}`}>{user.firstName}</Link>
-
         </div>
     );
 };

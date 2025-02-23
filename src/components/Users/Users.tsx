@@ -48,9 +48,13 @@ const Users = () => {
             <Search />
             {query && <h3>Results for: {query}</h3>}
             <div>
-                {data.users?.map((user: IUser) => (
-                <User key={user.id} user={user} />
-                ))}
+                {data.users && data.users.length > 0 ? (
+                    data.users.map((user: IUser) => (
+                        <User key={user.id} user={user} />
+                    ))
+                ) : (
+                    <p>Nothing found</p>
+                )}
             </div>
 
             <Pagination currentPage={currentPage} totalPages={totalPages} />

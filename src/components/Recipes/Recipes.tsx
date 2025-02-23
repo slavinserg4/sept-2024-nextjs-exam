@@ -53,9 +53,13 @@ const Recipes = () => {
             {query && <h3>Results for: {query}</h3>}
             {tag && <h3>Filtered by tag: {tag}</h3>}
             <div className="recipesInfo">
-                {data.recipes.map((recipe) => (
-                    <Recipe key={recipe.id} recipe={recipe} />
-                ))}
+                {data.recipes && data.recipes.length > 0 ? (
+                    data.recipes.map((recipe) => (
+                        <Recipe key={recipe.id} recipe={recipe} />
+                    ))
+                ) : (
+                    <p>Nothing found</p>
+                )}
             </div>
             <Pagination currentPage={currentPage} totalPages={totalPages} />
         </div>

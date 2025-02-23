@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.UsersDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: "Inter", serif;
+    width: 350px;
+    background: linear-gradient(
+            135deg,
+            #ded5ed 0%,   /* м'який фіолетовий */
+            #f8d5ed 100%  /* пастельно-рожевий */
+    );    border-radius: 15px;
+}
+.UsersDiv h3{
+    margin-top: 1px;
+}

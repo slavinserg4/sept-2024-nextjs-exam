@@ -1,5 +1,7 @@
 "use client";
 
+import '@/app/globals.css'
+import './StyleForRecipes.css'
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/Pagination/Pagination";
@@ -42,18 +44,20 @@ const Recipes = () => {
         fetchRecipes().catch();
     }, [query, currentPage, tag]);
 
-    if (!data) return <div>Loading...</div>;
+    if (!data) return <div className={'loader'}></div>;
 
     const totalPages = data.total ? Math.ceil(data.total / limit) : 1;
 
     return (
-        <div>
+        <div className={'Recipes'}>
             <Search />
-            {query && <h2>Results for: {query}</h2>}
-            {tag && <h2>Filtered by tag: {tag}</h2>}
-            {data.recipes.map((recipe) => (
-                <Recipe key={recipe.id} recipe={recipe} />
-            ))}
+            {query && <h3>Results for: {query}</h3>}
+            {tag && <h3>Filtered by tag: {tag}</h3>}
+            <div className="recipesInfo">
+                {data.recipes.map((recipe) => (
+                    <Recipe key={recipe.id} recipe={recipe} />
+                ))}
+            </div>
             <Pagination currentPage={currentPage} totalPages={totalPages} />
         </div>
     );

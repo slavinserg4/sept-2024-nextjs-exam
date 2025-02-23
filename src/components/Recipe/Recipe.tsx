@@ -2,7 +2,7 @@ import React from "react";
 import {IRecipe} from "@/models/IRecipe";
 import Link from "next/link";
 import RecipeTags from "@/components/RecipeTags/RecipeTags";
-
+import './StyleForRecipe.css'
 interface IRecipeProps {
     recipe: IRecipe;
 }
@@ -10,9 +10,11 @@ interface IRecipeProps {
 
 const Recipe: React.FC<IRecipeProps> = ({ recipe }) => {
     return (
-        <div style={{ border: '1px solid #ccc', padding: '8px', marginBottom: '8px' }}>
-            <Link href={`/recipes/${recipe.id}`}>{recipe.name}</Link>
+        <div className="Recipe">
+            <Link className={'LinkToRecipeDetails'} href={`/recipes/${recipe.id}`}>{recipe.name}</Link>
+            <h4>Tags:</h4>
             {recipe.tags.map((tag,index)=><RecipeTags tag={tag} key={index}/>)}
+            <hr/>
         </div>
     );
 };

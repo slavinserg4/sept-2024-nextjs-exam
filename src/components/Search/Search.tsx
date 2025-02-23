@@ -1,8 +1,10 @@
 "use client";
 
+import './StyleForSearch.css'
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useTransition } from "react";
 import { searchQueryAction } from "@/server-actions/ServerActions";
+import Form from "next/form";
 
 const Search = () => {
     const pathname = usePathname();
@@ -21,25 +23,20 @@ const Search = () => {
     };
 
     return (
-        <form
-            action={handleSearch}
-            style={{ display: "flex", gap: "8px", marginBottom: "16px" }}
-        >
+        <Form action={handleSearch} className={'search-form'}>
             <input
                 type="text"
                 name="query"
                 placeholder="Search by name or ID..."
                 defaultValue={query}
-                style={{ padding: "8px", border: "1px solid #ccc", borderRadius: "4px" }}
             />
             <button
                 type="submit"
                 disabled={isPending}
-                style={{ padding: "8px", cursor: "pointer" }}
             >
-                {isPending ? "🔄 Searching..." : "🔍 Search"}
+                {isPending ? "Searching..." : "Search"}
             </button>
-        </form>
+        </Form>
     );
 };
 

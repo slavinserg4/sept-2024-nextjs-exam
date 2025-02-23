@@ -1,0 +1,7 @@
+.LinkToRecipeDetails{
+    color: black;
+    text-decoration: underline;
+}
+.LinkToRecipeDetails:hover{
+    background-color: #c2b8d5;
+}

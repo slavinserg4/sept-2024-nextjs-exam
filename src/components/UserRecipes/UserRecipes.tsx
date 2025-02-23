@@ -1,5 +1,7 @@
 "use client";
 
+import './StyleForUserRecipes.css'
+import '@/app/globals.css'
 import React, { FC, useEffect, useState } from "react";
 import { mergeRecipesWithUsers } from "@/services/helper";
 import { IRecipe } from "@/models/IRecipe";
@@ -45,17 +47,17 @@ const UserRecipes: FC<Props> = ({ userId }) => {
         fetchUserRecipes().catch();
     }, [userId]);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div className={'loader'}></div>;
     if (error) return <div>Error: {error}</div>;
     if (userRecipes.length === 0) return <h3>This user has no recipes.</h3>;
 
     return (
         <div>
-            <h2>Recipes of this user</h2>
+            <h4>Recipes of this user</h4>
             <ul>
                 {userRecipes.map((recipe) => (
                     <li key={recipe.id}>
-                        <Link href={`/recipes/${recipe.id}`}>{recipe.name}</Link>
+                        <Link className={'LinkToRecipeDetails'} href={`/recipes/${recipe.id}`}>{recipe.name}</Link>
                     </li>
                 ))}
             </ul>

@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.Recipes{
+    font-family: "Inter", serif;
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #ded5ed; /* fallback */
+    background: linear-gradient(
+            135deg,
+            #ded5ed 0%,   /* м'який фіолетовий */
+            #f8d5ed 100%  /* пастельно-рожевий */
+    );
+    border-radius: 15px;
+}
+.recipesInfo{
+    width: 400px;
+}
+.Recipes h3{
+margin-top: 1px;
+}

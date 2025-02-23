@@ -1,3 +1,6 @@
 .LinkToTag{
     color: black;
 }
+.LinkToTag:hover{
+        background-color: #c2b8d5;
+}

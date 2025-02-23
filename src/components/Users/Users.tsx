@@ -1,5 +1,6 @@
 "use client";
-
+import '@/app/globals.css'
+import './StyleForUsers.css'
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Pagination from "@/components/Pagination/Pagination";
@@ -38,17 +39,20 @@ const Users = () => {
         fetchUsers().catch();
     }, [query, currentPage]);
 
-    if (!data) return <div>Loading...</div>;
+    if (!data) return <div className={'loader'}></div>;
 
     const totalPages = data.total ? Math.ceil(data.total / limit) : 1;
 
     return (
-        <div>
+        <div className={'UsersDiv'}>
             <Search />
-            {query && <h2>Results for: {query}</h2>}
-            {data.users?.map((user: IUser) => (
+            {query && <h3>Results for: {query}</h3>}
+            <div>
+                {data.users?.map((user: IUser) => (
                 <User key={user.id} user={user} />
-            ))}
+                ))}
+            </div>
+
             <Pagination currentPage={currentPage} totalPages={totalPages} />
         </div>
     );

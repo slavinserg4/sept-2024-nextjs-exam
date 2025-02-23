@@ -1,15 +1,14 @@
-"use client";
-
+import './StyleForPagination.css'
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import React from "react";
+import {FC} from "react";
 
 interface PaginationProps {
     currentPage: number;
     totalPages: number;
 }
 
-const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages }) => {
+const Pagination:FC<PaginationProps> = ({ currentPage, totalPages }) => {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
@@ -28,12 +27,10 @@ const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages }) => {
     };
 
     return (
-        <nav style={{ display: "flex", gap: "8px", marginTop: "16px", alignItems: "center" }}>
-            {currentPage > 1 && <Link href={getPageLink(currentPage - 1)}>Prev</Link>}
-            <span>
-        Page {currentPage} of {totalPages}
-      </span>
-            {currentPage < totalPages && <Link href={getPageLink(currentPage + 1)}>Next</Link>}
+        <nav className={'navPagination'}>
+            {currentPage > 1 && <Link className={'LinksForPagination'} href={getPageLink(currentPage - 1)}>Prev</Link>}
+            <span>Page {currentPage} of {totalPages}</span>
+            {currentPage < totalPages && <Link className={'LinksForPagination'} href={getPageLink(currentPage + 1)}>Next</Link>}
         </nav>
     );
 };

@@ -1,5 +1,6 @@
 "use client";
-
+import '@/app/globals.css'
+import './StyleForUserDetails.css'
 import {useState, useEffect, FC} from "react";
 import UserRecipes from "@/components/UserRecipes/UserRecipes";
 import { IUser } from "@/models/IUser";
@@ -39,12 +40,13 @@ const UserDetails:FC<UserProps> = ({ id }) => {
         fetchUser().catch();
     }, [id]);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div className={'loader'}></div>;
     if (error) return <div>Error: {error}</div>;
     if (!user) return <div>No user found</div>;
 
     return (
-        <div>
+        <div className={'userDetailsDiv'}>
+            <img className={'imageOfUser'} src={user.image} alt="userimage"/>
             <p>Id: {user.id}</p>
             <p>First name: {user.firstName}</p>
             <p>Last name: {user.lastName}</p>
@@ -54,10 +56,8 @@ const UserDetails:FC<UserProps> = ({ id }) => {
             <p>Phone: {user.phone}</p>
             <p>Gender: {user.gender}</p>
             <p>BirthDate: {user.birthDate}</p>
-            <div>
-                Recipes:
-                <UserRecipes userId={id} />
-            </div>
+            <UserRecipes userId={id} />
+
         </div>
     );
 };

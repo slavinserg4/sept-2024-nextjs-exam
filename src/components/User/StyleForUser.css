@@ -1,0 +1,10 @@
+.userDiv{
+    margin-top: 5px;
+}
+.UserLink{
+    color: black;
+    text-decoration: none;
+}
+.UserLink:hover{
+    background-color: #c2b8d5;
+}

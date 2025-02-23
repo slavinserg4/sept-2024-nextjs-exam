@@ -1,5 +1,6 @@
 "use client";
-
+import '@/app/globals.css'
+import './StyleForRecipeDetails.css'
 import React, { useState, useEffect, FC } from "react";
 import Link from "next/link";
 import RecipeTags from "@/components/RecipeTags/RecipeTags";
@@ -40,12 +41,13 @@ const RecipeDetails: FC<RecipeDetailType> = ({ id }) => {
         fetchRecipe().catch();
     }, [id]);
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <div className={'loader'}></div>;
     if (error) return <div>Error: {error}</div>;
     if (!recipe) return <div>No recipe found</div>;
 
     return (
-        <div>
+        <div className={'RecipeDetails'}>
+            <img className={'RecipeImage'} src={recipe.image} alt="recipeimage"/>
             <p>Id: {recipe.id}</p>
             <p>Name: {recipe.name}</p>
             <p>PrepTimeMinutes: {recipe.prepTimeMinutes}</p>
@@ -53,7 +55,7 @@ const RecipeDetails: FC<RecipeDetailType> = ({ id }) => {
             <p>Servings: {recipe.servings}</p>
             <p>Difficulty: {recipe.difficulty}</p>
             <p>Cuisine: {recipe.cuisine}</p>
-            <Link href={`/users/${recipe.userId}`}>Author</Link>
+            <Link className={'LinkToUser'} href={`/users/${recipe.userId}`}>Author</Link>
             <br />
             <h3>Tags:</h3>
             {recipe.tags.map((tag: string, index: number) => (

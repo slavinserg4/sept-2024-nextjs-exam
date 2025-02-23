@@ -1,0 +1,12 @@
+.LinkToRecipeDetails{
+    color: black;
+    text-decoration: none;
+
+}
+.LinkToRecipeDetails:hover{
+    background-color: #c2b8d5;
+}
+.Recipe h4{
+    margin-top: 10px;
+    margin-bottom: 3px;
+}

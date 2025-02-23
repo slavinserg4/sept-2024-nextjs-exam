@@ -1,5 +1,6 @@
 "use client";
 
+import './StyleForForm.css'
 import { useForm } from "react-hook-form";
 import { LoginUser } from "@/server-actions/ServerActions";
 import { useState } from "react";
@@ -41,16 +42,19 @@ const FormComponent = () => {
     };
 
     return (
-        <div>
-            <h1>Аутентифікація</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <input type="text" {...register("username")} placeholder="Username" />
+        <div className={'divForLoginPage'}>
+            <h1>Log in</h1>
 
-                <input type="password" {...register("password")} placeholder="Password" />
+            <form className={'FormForLogin'} onSubmit={handleSubmit(onSubmit)}>
+                <p>Input username</p>
+                <input type="text" {...register("username")} placeholder="Username" className={'FormInputUsername'}/>
 
-                <button type="submit" disabled={!isValid}>Submit</button>
+                <p>Input password</p>
+                <input type="password" {...register("password")} placeholder="Password" className={'FormInputPassword'}/>
 
-                {errorMessage && <h4>{errorMessage}</h4>}
+                <button type="submit" disabled={!isValid} className={'ButtonForForm'}>Submit</button>
+
+                {errorMessage && <h4 className={'error'}>Incorrect login or password</h4>}
             </form>
         </div>
     );

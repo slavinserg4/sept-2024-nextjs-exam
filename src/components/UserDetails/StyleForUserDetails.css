@@ -1,0 +1,15 @@
+.userDetailsDiv{
+    height: 500px;
+    width: 400px;
+    background: linear-gradient(
+            135deg,
+            #ded5ed 0%,   /* м'який фіолетовий */
+            #f8d5ed 100%  /* пастельно-рожевий */
+    );     border-radius: 15px;
+    padding-left: 50px;
+    position: relative;
+}
+.imageOfUser{
+    position: absolute;
+    right: 20px;
+}

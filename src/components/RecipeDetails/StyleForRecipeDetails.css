@@ -1,0 +1,22 @@
+.RecipeDetails{
+    width: 800px;
+    background: linear-gradient(
+            135deg,
+            #ded5ed 0%,   /* м'який фіолетовий */
+            #f8d5ed 100%  /* пастельно-рожевий */
+    );
+    padding-left: 40px;
+    border-radius: 15px;
+    height: 490px;
+    position: relative;
+}
+.LinkToUser{
+    color: black;
+}
+.RecipeImage{
+    position: absolute;
+    width: 400px;
+    right: 40px;
+    bottom: 50px;
+    border-radius: 15px;
+}

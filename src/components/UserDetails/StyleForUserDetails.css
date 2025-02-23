@@ -3,8 +3,8 @@
     width: 400px;
     background: linear-gradient(
             135deg,
-            #ded5ed 0%,   /* м'який фіолетовий */
-            #f8d5ed 100%  /* пастельно-рожевий */
+            #ded5ed 0%,
+            #f8d5ed 100%
     );     border-radius: 15px;
     padding-left: 50px;
     position: relative;

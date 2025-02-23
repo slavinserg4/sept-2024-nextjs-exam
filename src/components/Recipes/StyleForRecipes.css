@@ -7,11 +7,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background: #ded5ed; /* fallback */
+    background: #ded5ed;
     background: linear-gradient(
             135deg,
-            #ded5ed 0%,   /* м'який фіолетовий */
-            #f8d5ed 100%  /* пастельно-рожевий */
+            #ded5ed 0%,
+            #f8d5ed 100%
     );
     border-radius: 15px;
 }

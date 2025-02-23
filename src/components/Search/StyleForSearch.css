@@ -38,7 +38,6 @@
     background-color: #e64a19;
 }
 
-/* Стиль кнопки, коли пошук триває */
 .search-form button[disabled] {
     opacity: 0.6;
     cursor: not-allowed;

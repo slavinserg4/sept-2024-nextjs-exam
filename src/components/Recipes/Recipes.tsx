@@ -22,7 +22,6 @@ const Recipes = () => {
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                // Формуємо рядок запиту з параметрами page, limit, query та tag
                 const queryString =
                     `?page=${currentPage}&limit=${limit}` +
                     (query ? `&query=${encodeURIComponent(query)}` : "") +
